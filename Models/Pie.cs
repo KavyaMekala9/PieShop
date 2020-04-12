@@ -16,8 +16,9 @@ namespace KavyaPieShop.Models
         public string ImageUrl { get; set; }
         public string ImageThumbnailUrl { get; set; }
         public bool IsPieOfTheWeek { get; set; }
-        public bool InStock { get; set; }      
-        public Category Category { get; set; }    
+        public bool InStock { get; set; }
         public int CategoryId { get; set; }
+        public Category Category { get; set; }    
+        public string Notes { get; set; }
     }
 }
