@@ -17,13 +17,37 @@ namespace KavyaPieShop.Controllers
             _pieRepository = iPieRepository;
             _categoryRepository = iCategoryRepository;
         }
-        public ViewResult List()
+        //before Pies-Categories navigation menu
+        //public ViewResult List()
+        //{
+        //    PiesListViewModel piesListViewModel = new PiesListViewModel();
+        //    piesListViewModel.Pies = _pieRepository.AllPies;
+        //    piesListViewModel.Categories = _categoryRepository.AllCategories;
+        //    piesListViewModel.CurrentCategory = "Cheese Cakes";
+        //    return View(piesListViewModel);
+        //}
+        public ViewResult List(string category)
         {
-            PiesListViewModel piesListViewModel = new PiesListViewModel();
-            piesListViewModel.Pies = _pieRepository.AllPies;
-            piesListViewModel.Categories = _categoryRepository.AllCategories;
-            piesListViewModel.CurrentCategory = "Cheese Cakes";
-            return View(piesListViewModel);
+            IEnumerable<Pie> pies;
+            string currentCategory;
+
+            if (string.IsNullOrEmpty(category))
+            {
+                pies = _pieRepository.AllPies.OrderBy(p => p.PieId);
+                currentCategory = "All pies";
+            }
+            else
+            {
+                pies = _pieRepository.AllPies.Where(p => p.Category.CategoryName == category)
+                    .OrderBy(p => p.PieId);
+                currentCategory = _categoryRepository.AllCategories.FirstOrDefault(c => c.CategoryName == category)?.CategoryName;
+            }
+
+            return View(new PiesListViewModel
+            {
+                Pies = pies,
+                CurrentCategory = currentCategory
+            });
         }
         public IActionResult Details (int id)
         {

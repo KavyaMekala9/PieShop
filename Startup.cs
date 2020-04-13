@@ -27,8 +27,12 @@ namespace KavyaPieShop
         {
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
             services.AddScoped<IPieRepository, PieRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ShoppingCart>(sp => ShoppingCart.GetCart(sp));
+            services.AddHttpContextAccessor();
+            services.AddSession();
             services.AddControllersWithViews();
         }
 
@@ -44,10 +48,11 @@ namespace KavyaPieShop
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseRouting();
-
+            app.UseSession(); //to be called before app.UseRouting();
+            app.UseRouting();           
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapGet("/", async context =>
