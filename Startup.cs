@@ -30,7 +30,8 @@ namespace KavyaPieShop
             
             services.AddScoped<IPieRepository, PieRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ShoppingCart>(sp => ShoppingCart.GetCart(sp));
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ShoppingCart>(sp => ShoppingCart.GetCart(sp));         
             services.AddHttpContextAccessor();
             services.AddSession();
             services.AddControllersWithViews();
